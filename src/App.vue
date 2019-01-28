@@ -77,31 +77,31 @@
               </div>
             </div>
             </div>
-        <div class="col-md-8 card-info">
+        <div class="col-md-8 card-info" style="margin-bottom: 20px;" v-for="ticket in sortedArray">
             <div class="col-md-5 btn-logo">
               <div class="logo-card">
                 <img src="./assets/logo.png">
               </div>
               <div class="btn-buy">
-                <button class="btn btn-orange">Купить<br/>  за 21 032 ​₽</button>
+                <button class="btn btn-orange">Купить<br/>  {{ticket.price}} ​₽</button>
               </div>
             </div>
           <div class="col-md-7 total-info">
             <div class="col-md-4 time-zona">
-              <h4 class="time">09:25</h4>
-              <p class="city">VVO, Владивосток</p>
-              <p class="date">9 окт 2018, Пт</p>
+              <h4 class="time">{{ ticket.departure_time }}</h4>
+              <p class="city">{{ ticket.origin }}, {{ ticket.origin_name }}</p>
+              <p class="date">{{ ticket.departure_date }}</p>
             </div>
             <div class="col-md-4 time-zona">
-              <h6 class="count-stops">1 пересадка</h6>
+              <h6 class="count-stops">{{ ticket.stops }} пересадка</h6>
               <div>
                 <hr><img src="./assets/plane.png" class="image-plane">
               </div>
             </div>
             <div class="col-md-4 time-zona-return">
-              <h4 class="time-return">09:25</h4>
-              <p class="city-return">VVO, Владивосток</p>
-              <p class="date-return">9 окт 2018, Пт</p>
+              <h4 class="time-return">{{ ticket.arrival_time }}</h4>
+              <p class="city-return">{{ticket.destination}}, {{ticket.destination_name}}</p>
+              <p class="date-return">{{ ticket.arrival_date }}</p>
             </div>
           </div>
         </div>
@@ -113,11 +113,25 @@
 </template>
 
 <script>
+  import json from './tickets.json'
 export default {
   name: 'app',
   data () {
     return {
+      data: json.tickets
+    }
+  },
+  computed : {
+    sortedArray: function() {
+      function compare(a, b) {
+        if (a.price < b.price)
+          return -1;
+        if (a.price > b.price)
+          return 1;
+        return 0;
+      }
 
+      return this.data.sort(compare);
     }
   }
 }
