@@ -8,6 +8,7 @@
         <div class="col-md-4 currency-stops-info">
           <div class="container currency-wrapper">
             <h5 class="text-left currency-text">Валюта</h5>
+            <span>{{checked}}</span>
             <div class="row currency">
               <div>
               <a class="col-md-4 currency-rub">RUB</a>
@@ -22,7 +23,7 @@
             <h5 class="text-left currency-text">Количество пересадок</h5>
               <div class="row checkbox-hover">
                 <div class="col-md-1">
-                  <input type="checkbox" class="input-checkbox-stops">
+                  <input type="checkbox" :value="4" v-model="checked" class="input-checkbox-stops">
                 </div>
                 <div class="row col-md-6 about-stops">
                   <label class="form-check-label checkbox-info">
@@ -33,7 +34,7 @@
               </div>
               <div class="row checkbox-hover">
                 <div class="col-md-1">
-                  <input type="checkbox" class="input-checkbox-stops">
+                  <input type="checkbox" :value="0" v-model="checked" class="input-checkbox-stops">
                 </div>
                 <div class="row col-md-6 about-stops">
                   <label class="form-check-label checkbox-info">
@@ -44,7 +45,7 @@
               </div>
             <div class="row checkbox-hover">
               <div class="col-md-1">
-                <input type="checkbox" class="input-checkbox-stops">
+                <input type="checkbox" @change="checkedTicket" :value="1" v-model="checked" class="input-checkbox-stops">
               </div>
               <div class="row col-md-6 about-stops">
                 <label class="form-check-label checkbox-info">
@@ -55,7 +56,7 @@
             </div>
               <div class="row checkbox-hover">
                 <div class="col-md-1">
-                  <input type="checkbox" class="input-checkbox-stops">
+                  <input type="checkbox" :value="2" v-model="checked" class="input-checkbox-stops">
                 </div>
                 <div class="row col-md-6 about-stops">
                   <label class="form-check-label checkbox-info">
@@ -66,7 +67,7 @@
               </div>
               <div class="row checkbox-hover">
                 <div class="col-md-1">
-                  <input type="checkbox" class="input-checkbox-stops">
+                  <input type="checkbox" :value="3" v-model="checked" class="input-checkbox-stops">
                 </div>
                 <div class="row col-md-6 about-stops">
                   <label class="form-check-label checkbox-info">
@@ -77,7 +78,7 @@
               </div>
             </div>
             </div>
-        <div class="col-md-8 card-info" style="margin-bottom: 20px;" v-for="ticket in sortedArray">
+        <div class="col-md-8 card-info" style="margin-bottom: 20px;" v-for="ticket in checkedTicket">
             <div class="col-md-5 btn-logo">
               <div class="logo-card">
                 <img src="./assets/logo.png">
@@ -118,7 +119,8 @@ export default {
   name: 'app',
   data () {
     return {
-      data: json.tickets
+      data: json.tickets,
+      checked: [4]
     }
   },
   computed : {
@@ -132,6 +134,17 @@ export default {
       }
 
       return this.data.sort(compare);
+    },
+    checkedTicket: function () {
+      this.checked.map(i => {
+        if (this.data) {
+          if (parseInt(i) === 4) {
+            return this.sortedArray
+          } else {
+            console.log(this.sortedArray.filter(t => t.stops === parseInt(i)))
+          }
+        }
+      })
     }
   }
 }
