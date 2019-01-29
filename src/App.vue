@@ -1,130 +1,84 @@
 <template>
   <div id="app">
     <div class="text-center">
-    <img src="./assets/logo1.png" class="logo">
-    <div class="container">
-      <div class="wrapper">
-      <div class="row">
-        <div class="col-md-4 currency-stops-info">
-          <div class="container currency-wrapper">
-            <h5 class="text-left currency-text">Валюта</h5>
-            <span>{{checked}}</span>
-            <div class="row currency">
-              <div>
-              <a class="col-md-4 currency-rub">RUB</a>
+      <img src="./assets/logo1.png" class="logo" alt="logo-main">
+      <div class="container">
+        <div class="wrapper">
+          <div class="row">
+            <div class="col-md-4 currency-stops-info">
+              <byFilter @checkedTicketByFilter="checkedTicketByFilter"/>
             </div>
-            <div>
-              <a class="col-md-4 currency-usd">USD</a>
-            </div>
-            <div>
-              <a class="col-md-4 currency-eur">EUR</a>
-            </div>
-            </div>
-            <h5 class="text-left currency-text">Количество пересадок</h5>
-              <div class="row checkbox-hover">
-                <div class="col-md-1">
-                  <input type="checkbox" :value="4" v-model="checked" class="input-checkbox-stops">
+            <div class="col-md-8">
+              <div class="row card-info" v-for="ticket in checkedTicket">
+                <div class="col-md-4 btn-logo">
+                  <div class="logo-card">
+                    <img src="./assets/logo.png" alt="company">
+                  </div>
+                  <div class="btn-buy">
+                    <button class="btn btn-orange">Купить<br/> {{ticket.price}}</button>
+                  </div>
                 </div>
-                <div class="row col-md-6 about-stops">
-                  <label class="form-check-label checkbox-info">
-                    Все
-                  </label>
-                  <a href="" class="only-a"><p class="only-p"><span class="only-span"></span></p></a>
-                </div>
-              </div>
-              <div class="row checkbox-hover">
-                <div class="col-md-1">
-                  <input type="checkbox" :value="0" v-model="checked" class="input-checkbox-stops">
-                </div>
-                <div class="row col-md-6 about-stops">
-                  <label class="form-check-label checkbox-info">
-                    Без пересадок
-                  </label>
-                  <a href="" class="only-a"><p class="only-p"><span class="only-span"></span></p></a>
+                <div class="col-md-8 total-info">
+                  <div class="col-md-4 time-zona">
+                    <h4 class="time">{{ ticket.departure_time }}</h4>
+                    <p class="city">{{ ticket.origin }}, {{ ticket.origin_name }}</p>
+                    <p class="date">{{ ticket.departure_date }}</p>
+                  </div>
+                  <div class="col-md-4 time-zona">
+                    <h6 class="count-stops">{{ ticket.stops }} пересадка</h6>
+                    <div>
+                      <hr>
+                      <img src="./assets/plane.png" class="image-plane" alt="logo-plane">
+                    </div>
+                  </div>
+                  <div class="col-md-4 time-zona-return">
+                    <h4 class="time-return">{{ ticket.arrival_time }}</h4>
+                    <p class="city-return">{{ticket.destination}}, {{ticket.destination_name}}</p>
+                    <p class="date-return">{{ ticket.arrival_date }}</p>
+                  </div>
                 </div>
               </div>
-            <div class="row checkbox-hover">
-              <div class="col-md-1">
-                <input type="checkbox" @change="checkedTicket" :value="1" v-model="checked" class="input-checkbox-stops">
-              </div>
-              <div class="row col-md-6 about-stops">
-                <label class="form-check-label checkbox-info">
-                  1 пересадка
-                </label>
-                <a href="" class="only-a"><p class="only-p"><span class="only-span"></span></p></a>
-              </div>
-            </div>
-              <div class="row checkbox-hover">
-                <div class="col-md-1">
-                  <input type="checkbox" :value="2" v-model="checked" class="input-checkbox-stops">
-                </div>
-                <div class="row col-md-6 about-stops">
-                  <label class="form-check-label checkbox-info">
-                    2 пересадки
-                  </label>
-                  <a href="" class="only-a"><p class="only-p"><span class="only-span"></span></p></a>
-                </div>
-              </div>
-              <div class="row checkbox-hover">
-                <div class="col-md-1">
-                  <input type="checkbox" :value="3" v-model="checked" class="input-checkbox-stops">
-                </div>
-                <div class="row col-md-6 about-stops">
-                  <label class="form-check-label checkbox-info">
-                    3 пересадки
-                  </label>
-                  <a href="" class="only-a"><p class="only-p"><span class="only-span"></span></p></a>
-                </div>
-              </div>
-            </div>
-            </div>
-        <div class="col-md-8 card-info" style="margin-bottom: 20px;" v-for="ticket in checkedTicket">
-            <div class="col-md-5 btn-logo">
-              <div class="logo-card">
-                <img src="./assets/logo.png">
-              </div>
-              <div class="btn-buy">
-                <button class="btn btn-orange">Купить<br/>  {{ticket.price}} ​₽</button>
-              </div>
-            </div>
-          <div class="col-md-7 total-info">
-            <div class="col-md-4 time-zona">
-              <h4 class="time">{{ ticket.departure_time }}</h4>
-              <p class="city">{{ ticket.origin }}, {{ ticket.origin_name }}</p>
-              <p class="date">{{ ticket.departure_date }}</p>
-            </div>
-            <div class="col-md-4 time-zona">
-              <h6 class="count-stops">{{ ticket.stops }} пересадка</h6>
-              <div>
-                <hr><img src="./assets/plane.png" class="image-plane">
-              </div>
-            </div>
-            <div class="col-md-4 time-zona-return">
-              <h4 class="time-return">{{ ticket.arrival_time }}</h4>
-              <p class="city-return">{{ticket.destination}}, {{ticket.destination_name}}</p>
-              <p class="date-return">{{ ticket.arrival_date }}</p>
             </div>
           </div>
         </div>
+      </div>
     </div>
-      </div>
   </div>
-  </div>
-      </div>
 </template>
 
 <script>
-  import json from './tickets.json'
+import byFilter from './assets/components/filter'
+import axios from 'axios'
 export default {
   name: 'app',
+  components: {byFilter},
   data () {
     return {
-      data: json.tickets,
-      checked: [4]
+      data: null,
+      currency: "RUB",
+      checked: 4,
+      usd: 66,
+      eur: 75,
+      isRUB: {
+        currency: 'RUB',
+        isActive: true
+      },
+      isUSD: {
+        currency: 'USD',
+        isActive: false
+      },
+      isEUR: {
+        currency: 'EUR',
+        isActive: false
+      },
+      rub: 0.63
     }
   },
+  mounted() {
+    this.getTicket()
+  },
   computed : {
-    sortedArray: function() {
+    sortedArray: function () {
       function compare(a, b) {
         if (a.price < b.price)
           return -1;
@@ -136,16 +90,69 @@ export default {
       return this.data.sort(compare);
     },
     checkedTicket: function () {
-      this.checked.map(i => {
-        if (this.data) {
-          if (parseInt(i) === 4) {
-            return this.sortedArray
-          } else {
-            console.log(this.sortedArray.filter(t => t.stops === parseInt(i)))
-          }
+      if (this.data) {
+        if (this.checked === 4) {
+          return this.sortedArray
+        } else {
+          return this.sortedArray.filter(t => t.stops === this.checked)
         }
-      })
+      }
     }
+  },
+  methods: {
+    checkedTicketByFilter(data) {
+      this.checked = data
+    },
+    getTicket() {
+      axios.get('https://raw.githubusercontent.com/Eziose/test/master/src/tickets.json')
+              .then(res => {
+                this.data = res.data.tickets
+              })
+              .catch(err => {
+                console.log(err)
+              })
+    }
+    /*currencies(cur, titleCur) {
+      this.data.map(i => {
+        if (titleCur === this.isUSD.currency && this.isRUB.isActive === true) {
+          i.price = `${((parseInt(i.price) / (cur)).toFixed(0))}`
+          return this.isUSD.isActive === true
+        }
+        if (titleCur === this.isEUR.currency && this.isRUB.isActive === true) {
+          i.price = `${((parseInt(i.price) / (cur)).toFixed(0))}`
+          this.isEUR.isActive === true
+        }
+        if (titleCur === this.isRUB.currency && this.isEUR.isActive === true) {
+          i.price = `${(parseInt(i.price)* (76.6)).toFixed(0)}`
+          this.isRUB.isActive === true
+        }
+
+        if (titleCur === 'USD' && this.isFrom === 'RUB') {
+          i.price = `${((parseInt(i.price) / (cur)).toFixed(0))}`
+          return this.isFrom = 'USD'
+        }
+        if (titleCur === 'USD' && this.isFrom === 'EUR') {
+          i.price = `${((parseInt(i.price) * (1.14)).toFixed(0))}`
+          return this.isFrom = 'EUR'
+        }
+        if (titleCur === 'EUR' && this.isFrom === 'RUB') {
+          i.price = `${((parseInt(i.price) / (cur)).toFixed(0))}`
+          return this.isFrom = 'EUR'
+        }
+        if (titleCur === 'EUR' && this.isFrom === 'USD') {
+           i.price = `${((parseInt(i.price) * (0.87)).toFixed(0))}`
+           return this.isFrom = 'EUR'
+        }
+        if (titleCur === 'RUB' && this.isFrom === 'USD') {
+          i.price = `${(parseInt(i.price)* (67)).toFixed(0)}`
+          return this.isFrom = 'RUB'
+        }
+        if (titleCur === 'RUB' && this.isFrom === 'EUR') {
+          i.price = `${(parseInt(i.price)* (76.6)).toFixed(0)}`
+          return this.isFrom = 'RUB'
+      })
+      return this.data
+    }*/
   }
 }
 </script>
@@ -156,78 +163,18 @@ export default {
     margin-bottom: 50px;
   }
   .wrapper {
-    width: 820px;
+    width: 860px;
     margin: 0 auto;
-  }
-  .currency-wrapper {
-    width: 232px;
-    height: 334px;
-    background: #fff;
-    border-radius: 5px;
-  }
-  .currency-text {
-    font-size: 12px;
-    text-transform: uppercase;
-    color: #4A4A4A;
-    margin: 0;
-    padding: 20px 0 15px 0;
-    font-family: 'Open Sans', sans-serif;
-  }
-  .currency {
-    border: 1px solid #D2D5D6;
-    height: 40px;
-    width: 204px;
-    padding: 10px;
-    margin: 0;
-    border-radius: 5px;
-    text-decoration: none;
-  }
-  .currency-usd {
-    border-left: 1px solid #D2D5D6;
-    border-right: 1px solid #D2D5D6;
-  }
-  .currency-rub, .currency-usd, .currency-eur {
-    text-decoration: none;
-  }
-.currency-rub:hover, .currency-usd:hover, .currency-eur:hover {
-  color: #164d7f;
-  cursor: pointer;
-}
-  .checkbox-info {
-    font-weight: normal;
-  }
-  .about-stops {
-    padding: 0;
-    padding-left: 12px;
-    text-align: left;
-    font-size: 13px;
-    color: #4A4A4A;
-    margin: 0;
-    font-family: 'Open Sans', sans-serif;
-  }
-  .input-checkbox-stops {
-    width: 15px;
-    height: 15px;
-    margin: 2px 0 0;
-    border-radius: 5px;
-    background-color: #fff;
   }
 input[type=checkbox]:after {
   background-color: #fff;
 }
-  .checkbox-hover {
-    padding: 2px 0;
-  }
-  .checkbox-hover:hover {
-    background-color: #F1FCFF;
-  }
-  .currency-stops-info {
-    padding-right: 0;
-  }
+
   .card-info {
     padding: 0;
-    background-color: #fff;
     border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 20px;
   }
   .logo-card {
     padding: 26px 0;
@@ -238,7 +185,7 @@ input[type=checkbox]:after {
   .btn-orange {
     background-color: #FF6D00;
     color: #fff;
-    border-color: none !important;
+    border: none !important;
     width: 160px;
     height: 55px;
     font-size: 16px;
@@ -307,16 +254,11 @@ input[type=checkbox]:after {
 .time-zona-return {
   padding: 0;
 }
-.only-a {
-  position: absolute;
-  right: -65px;
-  text-decoration: none;
-}
   .total-info {
     padding-right: 10px;
     padding-left: 10px;
   }
-  .checkbox-hover:hover p.only-p:after {
-    content: 'только'
-  }
+.currency-stops-info {
+  padding-right: 0;
+}
 </style>
