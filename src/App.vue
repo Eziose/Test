@@ -5,12 +5,12 @@
       <div class="container">
         <div class="wrapper">
           <div class="row">
-            <div class="col-md-4 currency-stops-info">
+            <div class="col-md-4 col-sm-4 col-xs-12 currency-stops-info">
               <byFilter @checkedTicketByFilter="checkedTicketByFilter"/>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 col-sm-8 col-xs-11 tickects-blocks">
               <div class="row card-info" v-for="ticket in checkedTicket">
-                <div class="col-md-4 btn-logo">
+                <div class="col-md-4 col-sm-4 btn-logo">
                   <div class="logo-card">
                     <img src="./assets/logo.png" alt="company">
                   </div>
@@ -18,20 +18,20 @@
                     <button class="btn btn-orange">Купить<br/> {{ticket.price}}</button>
                   </div>
                 </div>
-                <div class="col-md-8 total-info">
-                  <div class="col-md-4 time-zona">
+                <div class="col-md-8 col-sm-8 col-xs-12 total-info">
+                  <div class="col-md-4 col-sm-4 col-xs-4 time-zona">
                     <h4 class="time">{{ ticket.departure_time }}</h4>
                     <p class="city">{{ ticket.origin }}, {{ ticket.origin_name }}</p>
                     <p class="date">{{ ticket.departure_date }}</p>
                   </div>
-                  <div class="col-md-4 time-zona">
+                  <div class="col-md-4 col-sm-4 col-xs-4 time-zona">
                     <h6 class="count-stops">{{ ticket.stops }} пересадка</h6>
                     <div>
                       <hr>
                       <img src="./assets/plane.png" class="image-plane" alt="logo-plane">
                     </div>
                   </div>
-                  <div class="col-md-4 time-zona-return">
+                  <div class="col-md-4 col-sm-4 col-xs-4 time-zona-return">
                     <h4 class="time-return">{{ ticket.arrival_time }}</h4>
                     <p class="city-return">{{ticket.destination}}, {{ticket.destination_name}}</p>
                     <p class="date-return">{{ ticket.arrival_date }}</p>
@@ -158,17 +158,20 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
   .logo {
     margin-bottom: 50px;
   }
+
   .wrapper {
     width: 860px;
     margin: 0 auto;
   }
-input[type=checkbox]:after {
-  background-color: #fff;
-}
+
+  input[type=checkbox]:after {
+    background-color: #fff;
+  }
 
   .card-info {
     padding: 0;
@@ -176,12 +179,15 @@ input[type=checkbox]:after {
     background-color: #fff;
     margin-bottom: 20px;
   }
+
   .logo-card {
     padding: 26px 0;
   }
+
   .btn-buy {
     padding-bottom: 25px;
   }
+
   .btn-orange {
     background-color: #FF6D00;
     color: #fff;
@@ -191,18 +197,22 @@ input[type=checkbox]:after {
     font-size: 16px;
     font-family: 'Open Sans', sans-serif;
   }
+
   .btn-logo {
     border-right: 1px solid #ECEFF1;
   }
+
   .time-zona {
     padding: 0;
   }
+
   .city {
     font-size: 11px;
     margin-bottom: 5px;
     text-align: left;
     font-family: 'Open Sans', sans-serif;
   }
+
   .time {
     text-align: left;
     margin-top: 26px;
@@ -210,12 +220,14 @@ input[type=checkbox]:after {
     font-size: 32px;
     font-family: 'Open Sans', sans-serif;
   }
+
   .date {
     font-size: 11px;
     color: #8B9497;
     text-align: left;
     font-family: 'Open Sans', sans-serif;
   }
+
   .count-stops {
     font-family: 'Open Sans', sans-serif;
     font-size: 10px;
@@ -224,41 +236,125 @@ input[type=checkbox]:after {
     color: #8B9497;
     text-transform: uppercase;
   }
+
   hr {
     margin-top: 8px;
   }
+
   .image-plane {
     position: absolute;
-    top:45px;
+    top: 45px;
     right: -10px;
   }
-.city-return {
-  font-size: 11px;
-  margin-bottom: 5px;
-  text-align: right;
-  font-family: 'Open Sans', sans-serif;
-}
-.time-return {
-  text-align: right;
-  margin-top: 26px;
-  margin-bottom: 12px;
-  font-size: 32px;
-  font-family: 'Open Sans', sans-serif;
-}
-.date-return {
-  font-size: 11px;
-  color: #8B9497;
-  text-align: right;
-  font-family: 'Open Sans', sans-serif;
-}
-.time-zona-return {
-  padding: 0;
-}
+
+  .city-return {
+    font-size: 11px;
+    margin-bottom: 5px;
+    text-align: right;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .time-return {
+    text-align: right;
+    margin-top: 26px;
+    margin-bottom: 12px;
+    font-size: 32px;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .date-return {
+    font-size: 11px;
+    color: #8B9497;
+    text-align: right;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .time-zona-return {
+    padding: 0;
+  }
+
   .total-info {
     padding-right: 10px;
     padding-left: 10px;
   }
-.currency-stops-info {
-  padding-right: 0;
-}
+
+  .currency-stops-info {
+    padding-right: 0;
+  }
+
+  @media (max-width: 768px) {
+    .wrapper {
+      width: 100%;
+    }
+
+    .currency-stops-info {
+      width: 28%;
+    }
+
+    .tickects-blocks {
+      margin-left: 20px;
+    }
+  }
+
+  @media (max-width: 660px) and (min-width: 568px) {
+    .currency-stops-info {
+      width: 94%;
+      padding-left: 20px;
+    }
+
+    .tickects-blocks {
+      margin-left: 23px;
+    }
+  }
+
+  @media (max-width: 760px) and (min-width: 667px) {
+    .tickects-blocks {
+      width: 65%;
+      margin-left: 32px;
+    }
+  }
+
+  @media (max-width: 767px) and (min-width: 736px) {
+    .tickects-blocks {
+      width: 66%;
+      margin-left: 15px;
+    }
+  }
+
+  @media (max-width: 812px) and (min-width: 769px) {
+    .currency-stops-info {
+      width: 30%;
+    }
+
+    .tickects-blocks {
+      margin-left: -20px;
+    }
+  }
+
+  @media (max-width: 374px) and (min-width: 320px) {
+    .tickects-blocks {
+      margin-left: 14px;
+    }
+
+    .currency-stops-info {
+      width: 100%;
+      padding-left: 16px;
+    }
+  }
+
+  @media (max-width: 376px) and (min-width: 375px) {
+    .tickects-blocks {
+      margin-left: 15px;
+    }
+
+    .currency-stops-info {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 414px) and (min-width: 377px) {
+    .currency-stops-info {
+      width: 100%;
+    }
+  }
 </style>
