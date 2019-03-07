@@ -1,40 +1,99 @@
 <template>
   <div id="app">
-    <div class="text-center">
-      <img src="./assets/logo1.png" class="logo" alt="logo-main">
-      <div class="container">
-        <div class="wrapper">
-          <div class="row">
-            <div class="col-md-4 col-sm-4 col-xs-12 currency-stops-info">
-              <byFilter @checkedTicketByFilter="checkedTicketByFilter"/>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title">Charts</h3>
+              <span class="pull-right">
+                        <!-- Tabs -->
+                        <ul class="nav panel-tabs">
+                            <li :class="[isPie ? 'active' : '']"><a href="#tab1" data-toggle="tab" @click="pie">Pie</a></li>
+                            <li :class="[isBar ? 'active' : '']"><a href="#tab2" data-toggle="tab" @click="bar">Bar</a></li>
+                            <li :class="[isDonut ? 'active' : '']"><a href="#tab3" data-toggle="tab" @click="donut">Donut</a></li>
+
+                        </ul>
+                    </span>
             </div>
-            <div class="col-md-8 col-sm-8 col-xs-11 tickects-blocks">
-              <div class="row card-info" v-for="ticket in checkedTicket">
-                <div class="col-md-4 col-sm-4 btn-logo">
-                  <div class="logo-card">
-                    <img src="./assets/logo.png" alt="company">
-                  </div>
-                  <div class="btn-buy">
-                    <button class="btn btn-orange">Купить<br/> {{ticket.price}}</button>
-                  </div>
-                </div>
-                <div class="col-md-8 col-sm-8 col-xs-12 total-info">
-                  <div class="col-md-4 col-sm-4 col-xs-4 time-zona">
-                    <h4 class="time">{{ ticket.departure_time }}</h4>
-                    <p class="city">{{ ticket.origin }}, {{ ticket.origin_name }}</p>
-                    <p class="date">{{ ticket.departure_date }}</p>
-                  </div>
-                  <div class="col-md-4 col-sm-4 col-xs-4 time-zona">
-                    <h6 class="count-stops">{{ ticket.stops }} пересадка</h6>
-                    <div>
-                      <hr>
-                      <img src="./assets/plane.png" class="image-plane" alt="logo-plane">
+            <div class="panel-body">
+              <div class="tab-content">
+                <div class="tab-pane active" id="tab1">
+                  <div style="width: 300px;height: 200px; margin: 0 auto;">
+                    <div style="margin: 0 50px;">
+                      <div class="col-md-3">
+                        <label>Label</label>
+                        <div v-for="em in this.labelNewForChart">
+                          <select v-model="labelForChart">
+                            <option v-for="e in em" :value="e" v-if="e !== 'background'">{{e}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-3" style="margin-left:40px;">
+                        <label>Data</label>
+                        <div v-for="em in this.dataNewForChart">
+                          <select v-model="dataForChart">
+                            <option v-for="e in em" :value="e" v-if="e !== 'background'">{{ e }}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <Pie :chart-data="datacollection"></Pie>
+                    <div class="text-center">
+                      <button class="btn btn-info" @click="fillData()">Go!</button>
                     </div>
                   </div>
-                  <div class="col-md-4 col-sm-4 col-xs-4 time-zona-return">
-                    <h4 class="time-return">{{ ticket.arrival_time }}</h4>
-                    <p class="city-return">{{ticket.destination}}, {{ticket.destination_name}}</p>
-                    <p class="date-return">{{ ticket.arrival_date }}</p>
+                </div>
+                <div class="tab-pane" id="tab2">
+                  <div style="width: 300px;height: 200px; margin: 0 auto;">
+                  <div style="margin: 0 50px;">
+                    <div class="col-md-3">
+                      <label>Label</label>
+                      <div v-for="em in this.labelNewForChart">
+                        <select v-model="labelForChart">
+                          <option v-for="e in em" :value="e" v-if="e !== 'background'">{{e}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3" style="margin-left:40px;">
+                      <label>Data</label>
+                      <div v-for="em in this.dataNewForChart">
+                        <select v-model="dataForChart">
+                          <option v-for="e in em" :value="e" v-if="e !== 'background'">{{ e }}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <bar :chart-data="datacollection"></bar>
+                  <div class="text-center">
+                    <button class="btn btn-info" @click="fillData()">Go!</button>
+                  </div>
+                </div>
+                </div>
+                <div class="tab-pane" id="tab3">
+                  <div style="width: 300px;height: 200px; margin: 0 auto;">
+                    <div style="margin: 0 50px;">
+                      <div class="col-md-3">
+                        <label>Label</label>
+                        <div v-for="em in this.labelNewForChart">
+                          <select v-model="labelForChart">
+                            <option v-for="e in em" :value="e" v-if="e !== 'background'">{{e}}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-3" style="margin-left:40px;">
+                        <label>Data</label>
+                        <div v-for="em in this.dataNewForChart">
+                          <select v-model="dataForChart">
+                            <option v-for="e in em" :value="e" v-if="e !== 'background'">{{ e }}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <Donut :chart-data="datacollection"></Donut>
+                    <div class="text-center">
+                      <button class="btn btn-info" @click="fillData()">Go!</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -47,314 +106,148 @@
 </template>
 
 <script>
-import byFilter from './assets/components/filter'
-import axios from 'axios'
+  import Pie from './pie.js'
+  import Bar from './bar.js'
+  import Donut from './donut.js'
 export default {
   name: 'app',
-  components: {byFilter},
+  components: {
+    Pie,
+    Bar,
+    Donut
+  },
   data () {
     return {
-      data: null,
-      currency: "RUB",
-      checked: 4,
-      usd: 66,
-      eur: 75,
-      isRUB: {
-        currency: 'RUB',
-        isActive: true
-      },
-      isUSD: {
-        currency: 'USD',
-        isActive: false
-      },
-      isEUR: {
-        currency: 'EUR',
-        isActive: false
-      },
-      rub: 0.63
+      employees: [
+        { "name": "mike", "salary": 204 , "city": "LA", age: "90", background: "#334344" },
+        { "name": "dave", "salary": 3000  , "city": "KR", age: "70", background: "#7cd6a1"},
+        { "name": "max", "salary": 405 , "city": "New York", age: "55", background: "#234522" },
+        { "name": "harry", "salary": 120 , "city": "Montana", age: "40", background: "#755665" },
+        { "name": "dax", "salary": 115 , "city": "Vegas", age: "23", background: "#2ecdf2" },
+        { "name": "crack", "salary": 120  , "city": "Florida", age: "20", background: "#f2ba2c"},
+        { "name": "pack", "salary": 1500  , "city": "Paris", age: "35", background: "#8c1d17"}
+      ],
+      dataForChart: null,
+      labelForChart: null,
+      datacollection: null,
+      dataNewForChart: [],
+      labelNewForChart: [],
+      rows: [],
+      label:[],
+      data: [],
+      isPie: true,
+      isDonut: false,
+      isBar: false,
+      background: []
     }
   },
-  mounted() {
-    this.getTicket()
-  },
-  computed : {
-    sortedArray: function () {
-      function compare(a, b) {
-        if (a.price < b.price)
-          return -1;
-        if (a.price > b.price)
-          return 1;
-        return 0;
-      }
-
-      return this.data.sort(compare);
-    },
-    checkedTicket: function () {
-      if (this.data) {
-        if (this.checked === 4) {
-          return this.sortedArray
-        } else {
-          return this.sortedArray.filter(t => t.stops === this.checked)
-        }
-      }
-    }
+  mounted () {
+    this.fillData()
+    this.filterBydropwodn()
   },
   methods: {
-    checkedTicketByFilter(data) {
-      this.checked = data
-    },
-    getTicket() {
-      axios.get('https://raw.githubusercontent.com/Eziose/test/master/src/tickets.json')
-              .then(res => {
-                this.data = res.data.tickets
-              })
-              .catch(err => {
-                console.log(err)
-              })
-    }
-    /*currencies(cur, titleCur) {
-      this.data.map(i => {
-        if (titleCur === this.isUSD.currency && this.isRUB.isActive === true) {
-          i.price = `${((parseInt(i.price) / (cur)).toFixed(0))}`
-          return this.isUSD.isActive === true
-        }
-        if (titleCur === this.isEUR.currency && this.isRUB.isActive === true) {
-          i.price = `${((parseInt(i.price) / (cur)).toFixed(0))}`
-          this.isEUR.isActive === true
-        }
-        if (titleCur === this.isRUB.currency && this.isEUR.isActive === true) {
-          i.price = `${(parseInt(i.price)* (76.6)).toFixed(0)}`
-          this.isRUB.isActive === true
-        }
+    filterBydropwodn () {
+      let obj = {}
+      this.employees.map(emp => {
+        console.log(Object.keys(emp))
+        obj = Object.keys(emp)
 
-        if (titleCur === 'USD' && this.isFrom === 'RUB') {
-          i.price = `${((parseInt(i.price) / (cur)).toFixed(0))}`
-          return this.isFrom = 'USD'
-        }
-        if (titleCur === 'USD' && this.isFrom === 'EUR') {
-          i.price = `${((parseInt(i.price) * (1.14)).toFixed(0))}`
-          return this.isFrom = 'EUR'
-        }
-        if (titleCur === 'EUR' && this.isFrom === 'RUB') {
-          i.price = `${((parseInt(i.price) / (cur)).toFixed(0))}`
-          return this.isFrom = 'EUR'
-        }
-        if (titleCur === 'EUR' && this.isFrom === 'USD') {
-           i.price = `${((parseInt(i.price) * (0.87)).toFixed(0))}`
-           return this.isFrom = 'EUR'
-        }
-        if (titleCur === 'RUB' && this.isFrom === 'USD') {
-          i.price = `${(parseInt(i.price)* (67)).toFixed(0)}`
-          return this.isFrom = 'RUB'
-        }
-        if (titleCur === 'RUB' && this.isFrom === 'EUR') {
-          i.price = `${(parseInt(i.price)* (76.6)).toFixed(0)}`
-          return this.isFrom = 'RUB'
       })
-      return this.data
-    }*/
+      this.labelNewForChart.push(obj)
+      this.dataNewForChart.push(obj)
+    },
+    fillData () {
+      this.label = []
+      this.data = []
+      this.background = []
+      let obj = {}
+      this.employees.map(d => {
+        obj = {
+          [d[this.labelForChart]]: d[this.dataForChart]
+        }
+        this.label.push(d[this.labelForChart])
+        this.data.push(d[this.dataForChart])
+        this.background.push(d.background)
+      })
+      this.datacollection = {
+        labels: this.label,
+        datasets: [
+          {
+            label: this.dataForChart,
+            backgroundColor: this.background,
+            data: this.data
+          }
+        ]
+      }
+    },
+    bar () {
+      this.isPie = false
+      this.isDonut = false
+      this.isBar = true
+      jQuery('#tab1').removeClass('active')
+      jQuery('#tab3').removeClass('active')
+      jQuery('#tab2').addClass('active')
+    },
+    pie () {
+      this.isPie = true
+      this.isDonut = false
+      this.isBar = false
+      jQuery('#tab3').removeClass('active')
+      jQuery('#tab2').removeClass('active')
+      jQuery('#tab1').addClass('active')
+    },
+    donut () {
+      this.isPie = false
+      this.isDonut = true
+      this.isBar = false
+      jQuery('#tab2').removeClass('active')
+      jQuery('#tab1').removeClass('active')
+      jQuery('#tab3').addClass('active')
+    }
   }
 }
 </script>
 
 <style scoped>
-  @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-
-  .logo {
-    margin-bottom: 50px;
+  .panel-tabs {
+    position: relative;
+    bottom: 30px;
+    clear:both;
+    border-bottom: 1px solid transparent;
   }
 
-  .wrapper {
-    width: 860px;
-    margin: 0 auto;
+  .panel-tabs > li {
+    float: left;
+    margin-bottom: -1px;
   }
 
-  input[type=checkbox]:after {
-    background-color: #fff;
+  .panel-tabs > li > a {
+    margin-right: 2px;
+    margin-top: 4px;
+    line-height: .85;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    color: #ffffff;
   }
 
-  .card-info {
-    padding: 0;
-    border-radius: 5px;
-    background-color: #fff;
-    margin-bottom: 20px;
+  .panel-tabs > li > a:hover {
+    border-color: transparent;
+    color: #ffffff;
+    background-color: transparent;
   }
 
-  .logo-card {
-    padding: 26px 0;
-  }
-
-  .btn-buy {
-    padding-bottom: 25px;
-  }
-
-  .btn-orange {
-    background-color: #FF6D00;
+  .panel-tabs > li.active > a,
+  .panel-tabs > li.active > a:hover,
+  .panel-tabs > li.active > a:focus {
     color: #fff;
-    border: none !important;
-    width: 160px;
-    height: 55px;
-    font-size: 16px;
-    font-family: 'Open Sans', sans-serif;
+    cursor: default;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background-color: rgba(255,255,255, .23);
+    border-bottom-color: transparent;
   }
-
-  .btn-logo {
-    border-right: 1px solid #ECEFF1;
-  }
-
-  .time-zona {
-    padding: 0;
-  }
-
-  .city {
-    font-size: 11px;
-    margin-bottom: 5px;
-    text-align: left;
-    font-family: 'Open Sans', sans-serif;
-  }
-
-  .time {
-    text-align: left;
-    margin-top: 26px;
-    margin-bottom: 12px;
-    font-size: 32px;
-    font-family: 'Open Sans', sans-serif;
-  }
-
-  .date {
-    font-size: 11px;
-    color: #8B9497;
-    text-align: left;
-    font-family: 'Open Sans', sans-serif;
-  }
-
-  .count-stops {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 10px;
-    margin-top: 32px;
-    margin-bottom: 0;
-    color: #8B9497;
-    text-transform: uppercase;
-  }
-
-  hr {
-    margin-top: 8px;
-  }
-
-  .image-plane {
-    position: absolute;
-    top: 45px;
-    right: -10px;
-  }
-
-  .city-return {
-    font-size: 11px;
-    margin-bottom: 5px;
-    text-align: right;
-    font-family: 'Open Sans', sans-serif;
-  }
-
-  .time-return {
-    text-align: right;
-    margin-top: 26px;
-    margin-bottom: 12px;
-    font-size: 32px;
-    font-family: 'Open Sans', sans-serif;
-  }
-
-  .date-return {
-    font-size: 11px;
-    color: #8B9497;
-    text-align: right;
-    font-family: 'Open Sans', sans-serif;
-  }
-
-  .time-zona-return {
-    padding: 0;
-  }
-
-  .total-info {
-    padding-right: 10px;
-    padding-left: 10px;
-  }
-
-  .currency-stops-info {
-    padding-right: 0;
-  }
-
-  @media (max-width: 768px) {
-    .wrapper {
-      width: 100%;
-    }
-
-    .currency-stops-info {
-      width: 28%;
-    }
-
-    .tickects-blocks {
-      margin-left: 20px;
-    }
-  }
-
-  @media (max-width: 660px) and (min-width: 568px) {
-    .currency-stops-info {
-      width: 94%;
-      padding-left: 20px;
-    }
-
-    .tickects-blocks {
-      margin-left: 23px;
-    }
-  }
-
-  @media (max-width: 760px) and (min-width: 667px) {
-    .tickects-blocks {
-      width: 65%;
-      margin-left: 32px;
-    }
-  }
-
-  @media (max-width: 767px) and (min-width: 736px) {
-    .tickects-blocks {
-      width: 66%;
-      margin-left: 15px;
-    }
-  }
-
-  @media (max-width: 812px) and (min-width: 769px) {
-    .currency-stops-info {
-      width: 30%;
-    }
-
-    .tickects-blocks {
-      margin-left: -20px;
-    }
-  }
-
-  @media (max-width: 374px) and (min-width: 320px) {
-    .tickects-blocks {
-      margin-left: 14px;
-    }
-
-    .currency-stops-info {
-      width: 100%;
-      padding-left: 16px;
-    }
-  }
-
-  @media (max-width: 376px) and (min-width: 375px) {
-    .tickects-blocks {
-      margin-left: 15px;
-    }
-
-    .currency-stops-info {
-      width: 100%;
-    }
-  }
-
-  @media (max-width: 414px) and (min-width: 377px) {
-    .currency-stops-info {
-      width: 100%;
-    }
+  .panel-body {
+    height: 400px;
   }
 </style>

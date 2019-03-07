@@ -10,9 +10,14 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bootstrap": "^3.4.0",
+    "chart.js": "^2.7.3",
+    "jquery": "^3.3.1",
     "vue": "^2.5.11",
-    "vue-router": "^3.0.2"
+    "vue-chartjs": "^3.4.0",
+    "vue-router": "^3.0.2",
+    "vuejs-toggle-switch": "^1.1.32"
   },
   "browserslist": [
     "> 1%",
