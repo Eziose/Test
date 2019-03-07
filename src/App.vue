@@ -33,7 +33,7 @@
                         <label>Data</label>
                         <div v-for="em in this.dataNewForChart">
                           <select v-model="dataForChart">
-                            <option v-for="e in em" :value="e" v-if="e !== 'background'">{{ e }}</option>
+                            <option v-for="e in em" :value="e" v-if="e !== 'background' && e !== 'name' && e !== 'city'">{{ e }}</option>
                           </select>
                         </div>
                       </div>
@@ -59,7 +59,7 @@
                       <label>Data</label>
                       <div v-for="em in this.dataNewForChart">
                         <select v-model="dataForChart">
-                          <option v-for="e in em" :value="e" v-if="e !== 'background'">{{ e }}</option>
+                          <option v-for="e in em" :value="e" v-if="e !== 'background' && e !== 'name' && e !== 'city'">{{ e }}</option>
                         </select>
                       </div>
                     </div>
@@ -85,7 +85,7 @@
                         <label>Data</label>
                         <div v-for="em in this.dataNewForChart">
                           <select v-model="dataForChart">
-                            <option v-for="e in em" :value="e" v-if="e !== 'background'">{{ e }}</option>
+                            <option v-for="e in em" :value="e" v-if="e !== 'background' && e !== 'name' && e !== 'city'">{{ e }}</option>
                           </select>
                         </div>
                       </div>
@@ -167,6 +167,7 @@ export default {
         }
         this.label.push(d[this.labelForChart])
         this.data.push(d[this.dataForChart])
+        console.log(this.data, 'data')
         this.background.push(d.background)
       })
       this.datacollection = {
