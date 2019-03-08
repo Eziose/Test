@@ -109,6 +109,7 @@
   import Pie from './pie.js'
   import Bar from './bar.js'
   import Donut from './donut.js'
+  import { groupBy, sumBy } from 'lodash'
 export default {
   name: 'app',
   components: {
@@ -119,13 +120,13 @@ export default {
   data () {
     return {
       employees: [
-        { "name": "mike", "salary": 204 , "city": "LA", age: "90", background: "#334344" },
-        { "name": "dave", "salary": 3000  , "city": "KR", age: "70", background: "#7cd6a1"},
-        { "name": "max", "salary": 405 , "city": "New York", age: "55", background: "#234522" },
-        { "name": "harry", "salary": 120 , "city": "Montana", age: "40", background: "#755665" },
-        { "name": "dax", "salary": 115 , "city": "Vegas", age: "23", background: "#2ecdf2" },
-        { "name": "crack", "salary": 120  , "city": "Florida", age: "20", background: "#f2ba2c"},
-        { "name": "pack", "salary": 1500  , "city": "Paris", age: "35", background: "#8c1d17"}
+        { name: "mike", salary: 204 , city: "LA", age: 90, background: "#334344" },
+        { name: "mike", salary: 3000  , city: "KR", age: 70, background: "#7cd6a1"},
+        { name: "max", salary: 405 , city: "New York", age: 55, background: "#234522" },
+        { name: "harry", salary: 120 , city: "Montana", age: 40, background: "#755665" },
+        { name: "dax", salary: 115 , city: "Vegas", age: 23, background: "#2ecdf2" },
+        { name: "crack", salary: 120  , city: "Florida", age: 20, background: "#f2ba2c"},
+        { name: "pack", salary: 1500  , city: "Vegas", age: 35, background: "#8c1d17"}
       ],
       dataForChart: null,
       labelForChart: null,
@@ -142,11 +143,10 @@ export default {
     }
   },
   mounted () {
-    this.fillData()
     this.filterBydropwodn()
   },
   methods: {
-    filterBydropwodn () {
+     filterBydropwodn () {
       let obj = {}
       this.employees.map(emp => {
         console.log(Object.keys(emp))
@@ -160,16 +160,31 @@ export default {
       this.label = []
       this.data = []
       this.background = []
-      let obj = {}
-      this.employees.map(d => {
-        obj = {
-          [d[this.labelForChart]]: d[this.dataForChart]
+      let arr = this.employees
+      const ans = _(arr).groupBy(this.labelForChart)
+              .map((platform, n) => ({
+                [this.labelForChart]: n,
+                [this.dataForChart]: _.sumBy(platform, this.dataForChart),
+                background: _.sumBy(platform, 'background')
+              }))
+              .value()
+      console.log(ans, 'empoo')
+      ans.map(d => {
+        this.label.push(d[this.labelForChart])
+        this.data.push(d[this.dataForChart])
+        if (d.background.length !== 7) {
+          this.background.push(d.background.substr(7,7))
+        } else {
+          this.background.push(d.background)
         }
+      })
+      /*this.employees.map(d => {
+        console.log(d[this.labelForChart], 'd[this.labelForChart]')
         this.label.push(d[this.labelForChart])
         this.data.push(d[this.dataForChart])
         console.log(this.data, 'data')
         this.background.push(d.background)
-      })
+      })*/
       this.datacollection = {
         labels: this.label,
         datasets: [
