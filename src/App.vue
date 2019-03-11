@@ -282,7 +282,7 @@ export default {
               },
               plugins: {
                 colorschemes: {
-                  scheme: 'brewer.RdYlBu11'
+                  scheme: 'brewer.Set3-12'
                 },
                 datalabels: {
                   color: 'black',
@@ -310,7 +310,7 @@ export default {
               },
               plugins: {
                 colorschemes: {
-                  scheme: 'brewer.RdYlBu11'
+                  scheme: 'brewer.Set3-12'
                 },
                 datalabels: {
                   display: function(context) {
@@ -334,7 +334,7 @@ export default {
               },
               plugins: {
                 colorschemes: {
-                  scheme: 'brewer.RdYlBu11'
+                  scheme: 'brewer.Set3-12'
                 },
                 datalabels: {
                   color: 'white',
