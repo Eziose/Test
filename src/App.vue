@@ -135,6 +135,8 @@
 </template>
 
 <script>
+  import 'chartjs-plugin-colorschemes'
+  import 'chartjs-plugin-datalabels'
   import Pie from './pie.js'
   import Bar from './bar.js'
   import Donut from './donut.js'
@@ -151,15 +153,15 @@ export default {
   data () {
     return {
       employees: [
-        { name: "mike", salary: 204 , city: "LA", age: 90, background: "#172b4d" },
-        { name: "mike", salary: 204 , city: "LA", age: 90, background: "#172b4d"},
-        { name: "mike", salary: 3000  , city: "KR", age: 70, background: "#5e72e4"},
-        { name: "max", salary: 405 , city: "New York", age: 55, background: "#f4f5f7" },
-        { name: "harry", salary: 120 , city: "LA", age: 40, background: "#11cdef" },
-        { name: "dax", salary: 115 , city: "Vegas", age: 23, background: "#2dce89" },
-        { name: "dax", salary: 520 , city: "Vegas", age: 18, background: "#2dce89" },
-        { name: "crack", salary: 120  , city: "Florida", age: 20, background: "#f5365c"},
-        { name: "pack", salary: 1500  , city: "Vegas", age: 35, background: "#fb6340"}
+        { name: "mike", salary: 204 , city: "LA", age: 90},
+        { name: "mike", salary: 204 , city: "LA", age: 90},
+        { name: "mike", salary: 1000  , city: "KR", age: 70},
+        { name: "max", salary: 405 , city: "New York", age: 55},
+        { name: "harry", salary: 120 , city: "LA", age: 40},
+        { name: "dax", salary: 115 , city: "Vegas", age: 23},
+        { name: "dax", salary: 520 , city: "Vegas", age: 18},
+        { name: "crack", salary: 120  , city: "Florida", age: 20},
+        { name: "pack", salary: 1500  , city: "Vegas", age: 35}
       ],
       dataForChart: null,
       labelForChart: null,
@@ -208,8 +210,8 @@ export default {
           const ans = _(arr).groupBy(this.labelForChart)
               .map((platform, n) => ({
                   [this.labelForChart]: n,
-                  [this.dataForChart]: _.sumBy(platform, this.dataForChart),
-                  background: _.sumBy(platform, 'background')
+                  [this.dataForChart]: _.sumBy(platform, this.dataForChart)
+
               }))
               .value()
           let arr_level1 = groupBy(arr, this.labelForChart);
@@ -219,39 +221,17 @@ export default {
           let obgOp = _(arr_level2).map((outer, inner) => (
               map(outer, (data, label) => ({
                   [this.label2ForChart]: label,
-                  [this.dataForChart]: _.sumBy(data, this.dataForChart),
-                  background: _.sumBy(data, 'background')
+                  [this.dataForChart]: _.sumBy(data, this.dataForChart)
               }))
           ))
               .value()
-          console.log(obgOp, 'obgOp')
-          console.log(Object.keys(arr_level1), 'level 1')
-          console.log(arr_level2, 'level 2')
           obgOp.map(d => {
               map(d, (data, index) => {
                   this.labelStacked.push(`${data[this.label2ForChart]} - ${data[this.dataForChart]}`)
                   this.dataStacked.push(data[this.dataForChart])
-                  if (data.background.length !== 7) {
-                      this.background.push(data.background.substr(7, 7))
-                  } else {
-                      this.background.push(data.background)
-                  }
               })
           })
-          var Charts = {
-              setOrder: ['danger', 'warning', 'success', 'primary', 'info'],
-              colors: {
-                  theme: {
-                      'default': '#172b4d',
-                      'primary': '#5e72e4',
-                      'secondary': '#f4f5f7',
-                      'info': '#11cdef',
-                      'success': '#2dce89',
-                      'danger': '#f5365c',
-                      'warning': '#fb6340'
-                  }
-              }
-          }
+
           var $employ_obj_type_barchar_data = {
               labels: Object.keys(arr_level1),
               datasets: []
@@ -270,8 +250,7 @@ export default {
               })
               $employ_obj_type_barchar_data.datasets.push({
                   label: value,
-                  data: $data,
-                  backgroundColor: Charts.colors.theme[Charts.setOrder[$employ_obj_type_barchar_data.datasets.length]]
+                  data: $data
               })
           })
           this.datacollectionByStacked = $employ_obj_type_barchar_data
@@ -281,18 +260,13 @@ export default {
               this.label.push(`${d[this.labelForChart]} - ${d[this.dataForChart]}`)
               this.labellabel.push(d[this.labelForChart])
               this.data.push(d[this.dataForChart])
-              if (d.background.length !== 7) {
-                  this.background.push(d.background.substr(7, 7))
-              } else {
-                  this.background.push(d.background)
-              }
+
           })
           this.datacollection = {
               labels: this.label,
               datasets: [
                   {
                       label: this.dataForChart,
-                      backgroundColor: this.background,
                       data: this.data
                   }
               ]
@@ -305,6 +279,21 @@ export default {
                           return data['labels'][tooltipItems['index']]
                       })
                   }
+              },
+              plugins: {
+                colorschemes: {
+                  scheme: 'brewer.RdYlBu11'
+                },
+                datalabels: {
+                  color: 'black',
+                  display: function(context) {
+                    return context.dataset.data[context.dataIndex] > 15;
+                  },
+                  font: {
+                    weight: 'bold'
+                  },
+                  formatter: Math.round
+                }
               }
           }
 
@@ -313,11 +302,25 @@ export default {
                   xAxes: [{
                       stacked: true,
                       categoryPercentage: 0.5,
-                      barPercentage: 1
+                      barPercentage: 1.5
                   }],
                   yAxes: [{
-                      stacked: true
+                      stacked: true,
                   }]
+              },
+              plugins: {
+                colorschemes: {
+                  scheme: 'brewer.RdYlBu11'
+                },
+                datalabels: {
+                  display: function(context) {
+                    return context.dataset.data[context.dataIndex] > 15;
+                  },
+                  font: {
+                    weight: 'bold'
+                  },
+                  formatter: Math.round
+                }
               }
           }
           this.optionsByBar = {
@@ -328,6 +331,18 @@ export default {
                           return ''
                       })
                   }
+              },
+              plugins: {
+                colorschemes: {
+                  scheme: 'brewer.RdYlBu11'
+                },
+                datalabels: {
+                  color: 'white',
+                  font: {
+                    weight: 'bold'
+                  },
+                  formatter: Math.round
+                }
               }
           }
       },
