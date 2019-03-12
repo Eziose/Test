@@ -135,8 +135,8 @@
 </template>
 
 <script>
-  import 'chartjs-plugin-colorschemes'
   import 'chartjs-plugin-datalabels'
+  import br from 'chartjs-plugin-colorschemes/src/colorschemes/colorschemes.brewer'
   import Pie from './pie.js'
   import Bar from './bar.js'
   import Donut from './donut.js'
@@ -207,6 +207,23 @@ export default {
           this.dataStacked = []
           this.background = []
           let arr = this.employees
+          var Charts = {
+            setOrder: ['danger', 'default', 'success', 'primary', 'info', 'secondary'],
+            // Colors
+            colors: {
+              theme: {
+                'default': '#ff9f40',
+                'primary': '#36a2eb',
+                'secondary': '#ff6384',
+                'info': '#ffcd56',
+                'success': '#4bc0c0',
+                'danger': '#6f40fe'
+              }
+            }
+          }
+          br.OrRd9 = []
+          br.OrRd9.push('#ff9f40', '#36a2eb', '#ff6384', '#ffcd56', '#4bc0c0', '#6f40fe')
+          console.log(br.OrRd9, 'brewer.Set3-12')
           const ans = _(arr).groupBy(this.labelForChart)
               .map((platform, n) => ({
                   [this.labelForChart]: n,
@@ -250,7 +267,8 @@ export default {
               })
               $employ_obj_type_barchar_data.datasets.push({
                   label: value,
-                  data: $data
+                  data: $data,
+                  backgroundColor: Charts.colors.theme[Charts.setOrder[$employ_obj_type_barchar_data.datasets.length]]  ,
               })
           })
           this.datacollectionByStacked = $employ_obj_type_barchar_data
@@ -262,12 +280,14 @@ export default {
               this.data.push(d[this.dataForChart])
 
           })
+
           this.datacollection = {
               labels: this.label,
               datasets: [
                   {
                       label: this.dataForChart,
-                      data: this.data
+                      data: this.data,
+                      backgroundColor: br.OrRd9,
                   }
               ]
           }
@@ -281,9 +301,6 @@ export default {
                   }
               },
               plugins: {
-                colorschemes: {
-                  scheme: 'brewer.Set3-12'
-                },
                 datalabels: {
                   color: 'black',
                   display: function(context) {
@@ -309,9 +326,6 @@ export default {
                   }]
               },
               plugins: {
-                colorschemes: {
-                  scheme: 'brewer.Set3-12'
-                },
                 datalabels: {
                   display: function(context) {
                     return context.dataset.data[context.dataIndex] > 15;
@@ -333,9 +347,6 @@ export default {
                   }
               },
               plugins: {
-                colorschemes: {
-                  scheme: 'brewer.Set3-12'
-                },
                 datalabels: {
                   color: 'white',
                   font: {
